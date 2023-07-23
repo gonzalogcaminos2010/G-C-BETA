@@ -24,6 +24,8 @@ public function camp()
     return $this->belongsTo(Camp::class);
 }
 
+
+
 public function products()
 {
     return $this->belongsToMany(Product::class, 'order_details')->withPivot('quantity');

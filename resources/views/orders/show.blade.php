@@ -10,8 +10,12 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Usuario: {{ $order->user->name }}</h3>
+            @if($order->camp)
+                <h3 class="card-title">Campamento: {{ $order->camp->name }}</h3>  
+            @else
+                <h3 class="card-title">Campamento: No asociado</h3>  
+            @endif
         </div>
-
         <div class="card-body">
             <table class="table table-striped">
                 <thead>
@@ -21,7 +25,6 @@
                         <th>Cantidad</th>
                     </tr>
                 </thead>
-
                 <tbody>
                     @foreach($order->products as $product)
                         <tr>

@@ -25,7 +25,8 @@ class OrderController extends Controller
     public function create()
     {
         $products = Product::all();
-        return view('orders.create', compact('products'));
+        $camps = Camp::all();
+        return view('orders.create', compact('products', 'camps'));
     }
 
     public function store(Request $request)
@@ -33,10 +34,12 @@ class OrderController extends Controller
         $request->validate([
             'product_id' => 'required|array',
             'quantity' => 'required|array',
+            'camp_id' => 'required|exists:camps,id'
         ]);
 
         $order = new Order([
             'user_id' => auth()->id(),
+            'camp_id' => $request->input('camp_id'),
         ]);
         $order->save();
 
@@ -51,25 +54,20 @@ class OrderController extends Controller
 
         $order->products()->attach($productsData);
 
-        // Realiza alguna acción o redirige después de crear la orden.
-        // Por ejemplo, redireccionar a una página de éxito:
         return redirect()->route('orders.index')->with('success', 'Orden creada exitosamente.');
-    }  // <-- Este es el cierre de llave correcto para la función store
+    }
 
-// En tu controlador
-public function show($id)
-{
-    $order = Order::with('products')->findOrFail($id);
-    //dd($order);
-    return view('orders.show', compact('order'));
-}
-
-
+    public function show($id)
+    {
+        $order = Order::with('products')->findOrFail($id);
+        return view('orders.show', compact('order'));
+    }
 
     public function edit(Order $order)
     {
         $products = Product::all();
-        return view('orders.edit', compact('order', 'products'));
+        $camps = Camp::all();
+        return view('orders.edit', compact('order', 'products', 'camps'));
     }
 
     public function update(Request $request, Order $order)
@@ -77,7 +75,11 @@ public function show($id)
         $request->validate([
             'product_id' => 'required|array',
             'quantity' => 'required|array',
+            'camp_id' => 'required|exists:camps,id' // Aquí se asegura que el camp_id es requerido y existe en la tabla camps
         ]);
+        
+
+        $order->update(['camp_id' => $request->input('camp_id')]);
 
         foreach ($request->product_id as $key => $productId) {
             $orderDetail = OrderDetail::where('order_id', $order->id)
