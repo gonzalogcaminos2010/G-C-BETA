@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 
 /*
@@ -23,3 +24,16 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::resource('products', ProductController::class);
 
+
+Route::get('/products/import', function () {
+    return view('products.import');
+})->name('import.view');
+
+
+
+//Orders
+
+Route::resource('orders', OrderController::class);
+
+// Ruta para procesar la importación del archivo CSV
+Route::post('import/products', [ProductController::class, 'import'])->name('import.products');

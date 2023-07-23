@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Supplier;
+use App\Models\Category;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
@@ -17,13 +19,14 @@ class ProductController extends Controller
 
 public function create()
 {
-    return view('products.create');
+    $suppliers = Supplier::all();
+    $categories = Category::all();
+    return view('products.create', compact('suppliers', 'categories'));
 }
 
 public function store(Request $request)
 {
     $request->validate([
-        'user_id' => 'required|integer|exists:users,id',
         'supplier_id' => 'required|integer|exists:suppliers,id',
         'category_id' => 'required|integer|exists:categories,id',
         'name' => 'required|string|max:255',
@@ -32,11 +35,15 @@ public function store(Request $request)
         'price' => 'required|numeric',
     ]);
 
-    Product::create($request->all());
+    $product = new Product($request->all());
+    $product->user_id = auth()->id(); // Asigna el user_id del usuario autenticado
+    $product->save();
 
     return redirect()->route('products.index')
                      ->with('success', 'Product created successfully.');
 }
+
+
 
 
 public function show($id)
@@ -48,22 +55,31 @@ public function show($id)
 public function edit($id)
 {
     $product = Product::findOrFail($id);
-    return view('products.edit', ['product' => $product]);
+    $suppliers = Supplier::all();
+    $categories = Category::all();
+    return view('products.edit', compact('product', 'suppliers', 'categories'));
 }
+
 
 public function update(Request $request, $id)
 {
     $request->validate([
-        'name' => 'required',
-        'price' => 'required',
-        // aquí van las demás reglas de validación
+        'supplier_id' => 'required|integer|exists:suppliers,id',
+        'category_id' => 'required|integer|exists:categories,id',
+        'name' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'code' => 'required|string|max:255',
+        'price' => 'required|numeric',
     ]);
 
     $product = Product::findOrFail($id);
     $product->update($request->all());
 
-    return redirect()->route('products.index');
+    return redirect()->route('products.index')
+                     ->with('success', 'Product updated successfully.');
 }
+
+
 
 public function destroy($id)
 {
@@ -72,5 +88,13 @@ public function destroy($id)
 
     return redirect()->route('products.index');
 }
+
+public function import(Request $request)
+    {
+        $file = $request->file('file');
+        Excel::import(new ProductsImport, $file);
+
+        return redirect()->back()->with('success', 'CSV importado correctamente');
+    }
 
 }
