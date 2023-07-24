@@ -7,6 +7,7 @@ use App\Models\Camp;
 use App\Models\Product;
 use App\Models\OrderDetail;
 use Illuminate\Http\Request;
+use PDF;
 
 class OrderController extends Controller
 {
@@ -106,4 +107,16 @@ class OrderController extends Controller
 
         return redirect()->route('orders.index')->with('success', 'Order deleted successfully.');
     }
+    public function downloadPdf($id)
+    {
+        $order = Order::with('products')->findOrFail($id);
+    
+        // Generar el PDF
+        $pdf = PDF::loadView('orders_pdf', compact('order'));  // Nota el cambio aquí
+    
+        // Descargar el PDF
+        return $pdf->download('order_' . $order->id . '.pdf');
+    }
+    
+    
 }

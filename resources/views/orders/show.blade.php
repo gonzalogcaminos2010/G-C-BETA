@@ -15,6 +15,7 @@
             @else
                 <h3 class="card-title">Campamento: No asociado</h3>  
             @endif
+            <a href="{{ route('orders.pdf', ['id' => $order->id]) }}" class="btn btn-primary float-right">Descargar PDF</a>
         </div>
         <div class="card-body">
             <table class="table table-striped">

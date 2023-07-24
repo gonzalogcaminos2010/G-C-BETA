@@ -10,7 +10,7 @@ class Order extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'product_id',
+        'camp_id',
         'quantity', // Asegúrate de incluir el campo 'quantity' en el $fillable
         // Otros atributos que desees ser masivamente asignables
     ];
