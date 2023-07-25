@@ -31,32 +31,35 @@ class OrderController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'product_id' => 'required|array',
-            'quantity' => 'required|array',
-            'camp_id' => 'required|exists:camps,id'
-        ]);
+{
+    $request->validate([
+        'product_id' => 'required|array',
+        'quantity' => 'required|array',
+        'camp_id' => 'required|exists:camps,id'
+    ]);
 
-        $order = new Order([
-            'user_id' => auth()->id(),
-            'camp_id' => $request->input('camp_id'),
-        ]);
-        $order->save();
+    $order = new Order([
+        'user_id' => auth()->id(),
+        'camp_id' => $request->input('camp_id'),
+    ]);
+    $order->save();
 
-        $productIds = $request->input('product_id');
-        $quantities = $request->input('quantity');
+    $productIds = $request->input('product_id');
+    $quantities = $request->input('quantity');
 
-        $productsData = [];
-        foreach ($productIds as $index => $productId) {
-            $quantity = $quantities[$index];
-            $productsData[$productId] = ['quantity' => $quantity];
-        }
-
-        $order->products()->attach($productsData);
-
-        return redirect()->route('orders.index')->with('success', 'Orden creada exitosamente.');
+    $productsData = [];
+    foreach ($productIds as $index => $productId) {
+        $quantity = $quantities[$index];
+        $productsData[$productId] = ['quantity' => $quantity];
     }
+
+    $order->products()->attach($productsData);
+
+    // Enviar el correo electrónico
+    Mail::to($order->user->email)->send(new OrderCreated($order));
+
+    return redirect()->route('orders.index')->with('success', 'Orden creada exitosamente.');
+}
 
     public function show($id)
     {
