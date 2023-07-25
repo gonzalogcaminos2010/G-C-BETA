@@ -8,6 +8,8 @@ use App\Models\Product;
 use App\Models\OrderDetail;
 use Illuminate\Http\Request;
 use PDF;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderCreated; // Importa la clase OrderCreated aquí
 
 class OrderController extends Controller
 {
