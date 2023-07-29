@@ -10,12 +10,15 @@ class InventoryController extends Controller
      * Display a listing of the resource.
      */
 
-    public function index()
-{
-    $inventories = Inventory::with('product')->orderBy('created_at', 'desc')->paginate(15);
-
-    return view('inventories.index', compact('inventories'));
-}
+     public function index()
+     {
+         $inventories = Inventory::with(['product', 'order'])
+             ->orderBy('created_at', 'desc')
+             ->paginate(10);
+     
+         return view('inventories.index', ['inventories' => $inventories]);
+     }
+     
     
 
     /**

@@ -64,6 +64,7 @@ public function store(Request $request)
             'product_id' => $productId,
             'quantity' => $productData['quantity'],
             'movement_type' => 'OUT',
+            'order_id' => $order->id,  // Add this line
             'remarks' => 'Order ID: ' . $order->id,
         ]);
     }

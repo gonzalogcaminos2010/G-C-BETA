@@ -20,7 +20,7 @@
                         <th>Nombre del Producto</th>
                         <th>Cantidad</th>
                         <th>Tipo de Movimiento</th>
-                        <th>Notas</th>
+                        <th>ID de la Orden</th> <!-- Agrega esta línea -->
                         <th>Fecha del Movimiento</th>
                     </tr>
                 </thead>
@@ -30,12 +30,16 @@
                             <td>{{ $inventory->product_id }}</td>
                             <td>{{ $inventory->product->name }}</td>
                             <td>{{ $inventory->quantity }}</td>
-                            <td>{{ $inventory->movement_type }}</td>
-                            <td>{{ $inventory->remarks }}</td>
+                            <td>{{ $inventory->movement_type == 'OUT' ? 'SALIDA' : 'ENTRADA' }}</td>
+
+                            <td>{{ $inventory->order ? $inventory->order->id : 'N/A' }}</td>
+
+                            
                             <td>{{ $inventory->created_at }}</td>
                         </tr>
                     @endforeach
                 </tbody>
+                
             </table>
         </div>
         <!-- /.card-body -->
