@@ -1,13 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use PDF;
 use App\Models\Order;
 use App\Models\Camp;
 use App\Models\Product;
+use App\Models\Inventory;
 use App\Models\OrderDetail;
 use Illuminate\Http\Request;
-use PDF;
+
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderCreated; // Importa la clase OrderCreated aquí
 
@@ -55,7 +56,18 @@ class OrderController extends Controller
         $productsData[$productId] = ['quantity' => $quantity];
     }
 
+
     $order->products()->attach($productsData);
+
+    foreach ($productsData as $productId => $productData) {
+        Inventory::create([
+            'product_id' => $productId,
+            'quantity' => $productData['quantity'],
+            'movement_type' => 'OUT',
+            'remarks' => 'Order ID: ' . $order->id,
+        ]);
+    }
+    
 
     // Enviar el correo electrónico
     Mail::to($order->user->email)->send(new OrderCreated($order));
