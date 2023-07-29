@@ -4,7 +4,9 @@
     use App\Http\Controllers\OrderController;
     use App\Http\Controllers\ProductController;
     use App\Http\Controllers\InventoryController;
-    use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\SupplierController;
+use App\Models\Supplier;
+use Illuminate\Support\Facades\Auth;
 
     /*
     |--------------------------------------------------------------------------
@@ -32,6 +34,7 @@
     })->name('import.view');
 
 
+    Route::post('/products/import', [ProductController::class, 'import'])->name('import');
 
     //Orders
 
@@ -48,3 +51,8 @@
 
     Route::get('/orders/{id}/pdf', [OrderController::class, 'downloadPdf'])->name('orders.pdf');
 
+    
+
+//SUPPLIERS
+
+Route::resource('suppliers',SupplierController::class);

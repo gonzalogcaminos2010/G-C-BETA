@@ -24,7 +24,7 @@
                     <th scope="row">{{ $product->id }}</th>
                     <td>{{ $product->name }}</td>
                     <td>{{ $product->description }}</td>
-                    <td>{{ $product->price }}</td>
+                    
                     <td>
                         <a href="{{ route('products.show', $product->id) }}" class="btn btn-primary">Detalles</a>
                         <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning">Editar</a>

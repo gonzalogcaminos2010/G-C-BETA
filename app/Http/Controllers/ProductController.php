@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\Supplier;
 use App\Models\Category;
-
+use Maatwebsite\Excel\Facades\Excel;  // Agrega esta línea
+use App\Imports\ProductsImport;  // Agrega esta línea
 use Illuminate\Http\Request;
 use App\Models\Product;
 
@@ -32,7 +33,7 @@ public function store(Request $request)
         'name' => 'required|string|max:255',
         'description' => 'nullable|string',
         'code' => 'required|string|max:255',
-        'price' => 'required|numeric',
+        
     ]);
 
     $product = new Product($request->all());
@@ -90,11 +91,16 @@ public function destroy($id)
 }
 
 public function import(Request $request)
-    {
-        $file = $request->file('file');
-        Excel::import(new ProductsImport, $file);
+{
+    $request->validate([
+        'file' => 'required|mimes:csv,txt', // Solo permite archivos .csv y .txt
+    ]);
 
-        return redirect()->back()->with('success', 'CSV importado correctamente');
-    }
+    $file = $request->file('file');
+    Excel::import(new ProductsImport, $file);
+
+    return redirect()->back()->with('success', 'CSV importado correctamente');
+}
+
 
 }

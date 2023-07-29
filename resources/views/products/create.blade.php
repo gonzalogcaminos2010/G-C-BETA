@@ -26,10 +26,6 @@
                     <input type="text" name="code" class="form-control" id="code" placeholder="Enter Product Code">
                 </div>
 
-                <div class="form-group">
-                    <label for="price">Precio</label>
-                    <input type="text" name="price" class="form-control" id="price" placeholder="Enter Price">
-                </div>
 
                 <div class="form-group">
                     <label for="supplier">Proveedor</label>
