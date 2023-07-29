@@ -33,7 +33,7 @@ class OrderController extends Controller
         return view('orders.create', compact('products', 'camps'));
     }
 
-    public function store(Request $request)
+public function store(Request $request)
 {
     $request->validate([
         'product_id' => 'required|array',
