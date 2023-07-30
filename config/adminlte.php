@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'GyC',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -63,12 +63,12 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
-    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+    'logo' => '<b>GyC</b>',
+    'logo_img' => 'vendor/adminlte/dist/img/logo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'Admin Logo',
+    'logo_img_alt' => 'GyC Andalgalá',
 
     /*
     |--------------------------------------------------------------------------
@@ -84,13 +84,13 @@ return [
     */
 
     'auth_logo' => [
-        'enabled' => false,
+        'enabled' => true,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'path' => 'vendor/adminlte/dist/img/logo.png',
             'alt' => 'Auth Logo',
             'class' => '',
-            'width' => 50,
-            'height' => 50,
+            'width' => 150,
+            'height' => 150,
         ],
     ],
 
@@ -109,7 +109,7 @@ return [
     'preloader' => [
         'enabled' => true,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'path' => 'vendor/adminlte/dist/img/logo.png',
             'alt' => 'AdminLTE Preloader Image',
             'effect' => 'animation__shake',
             'width' => 60,
@@ -252,7 +252,7 @@ return [
     |
     */
 
-    'use_route_url' => false,
+    'use_route_url' => true,
     'dashboard_url' => 'home',
     'logout_url' => 'logout',
     'login_url' => 'login',
@@ -289,18 +289,79 @@ return [
     |
     */
 
-        'menu' => [
-            [
-                'text' => 'Productos',
-                'url'  => 'http://gyc-beta.test:3000/products',
-                'icon' => 'fas fa-fw fa-box',
-            ],
-            [
-                'text' => 'Pedidos',
-                'url'  => 'http://gyc-beta.test:3000/orders',
-                'icon' => 'fas fa-fw fa-list',
+    'menu' => [
+        [
+            'text' => 'Inventario',
+            'icon' => 'fas fa-fw fa-box',
+            'submenu' => [
+                [
+                    'text' => 'Ver Inventario',
+                    'route'  => 'inventories.index',
+                ],
+                [
+                    'text' => 'Crear Inventario',
+                    'route'  => 'inventories.create',
+                ],
             ],
         ],
+        [
+            'text' => 'Proveedores',
+            'icon' => 'fas fa-fw fa-truck',
+            'submenu' => [
+                [
+                    'text' => 'Ver Proveedores',
+                    'route'  => 'suppliers.index',
+                ],
+                [
+                    'text' => 'Crear Proveedor',
+                    'route'  => 'suppliers.create',
+                ],
+            ],
+        ],
+        [
+            'text' => 'Categorías',
+            'icon' => 'fas fa-fw fa-tag',
+            'submenu' => [
+                [
+                    'text' => 'Ver Categorías',
+                    'route'  => 'categories.index',
+                ],
+                [
+                    'text' => 'Crear Categoría',
+                    'route'  => 'categories.create',
+                ],
+            ],
+        ],
+        [
+            'text' => 'Campamentos',
+            'icon' => 'fas fa-fw fa-campground',
+            'submenu' => [
+                [
+                    'text' => 'Ver Campamentos',
+                    'route'  => 'camps.index',
+                ],
+                [
+                    'text' => 'Crear Campamento',
+                    'route'  => 'camps.create',
+                ],
+            ],
+        ],
+        [
+            'text' => 'Pedidos',
+            'icon' => 'fas fa-fw fa-list',
+            'submenu' => [
+                [
+                    'text' => 'Ver Pedidos',
+                    'route'  => 'orders.index',
+                ],
+                [
+                    'text' => 'Crear Pedido',
+                    'route'  => 'orders.create',
+                ],
+            ],
+        ],
+    ],
+    
     /*
     |--------------------------------------------------------------------------
     | Menu Filters

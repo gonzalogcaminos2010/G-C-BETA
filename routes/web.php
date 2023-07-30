@@ -1,11 +1,12 @@
     <?php
 
-    use Illuminate\Support\Facades\Route;
-    use App\Http\Controllers\OrderController;
-    use App\Http\Controllers\ProductController;
-    use App\Http\Controllers\InventoryController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CampController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\SupplierController;
-use App\Models\Supplier;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Auth;
 
     /*
@@ -56,3 +57,8 @@ use Illuminate\Support\Facades\Auth;
 //SUPPLIERS
 
 Route::resource('suppliers',SupplierController::class);
+Route::resource('categories',CategoryController::class);
+
+//CAMPAMENTOS
+
+Route::resource('camps', CampController::class);

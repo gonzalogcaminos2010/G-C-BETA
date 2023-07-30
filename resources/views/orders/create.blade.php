@@ -12,7 +12,7 @@
 
         <div class="card-header">
 
-            <h3 class="card-title">Solicitar Pedido a Base</h3>
+            <h3 class="card-title">Crear Remito</h3>
 
         </div>
 <div class="card-body">
@@ -43,7 +43,7 @@
             </div>
         </div>
         <button type="button" class="btn btn-primary" id="add-product">Agregar otro elemento</button>
-        <button type="submit" class="btn btn-success mt-3">Enviar</button>
+        <button type="submit" class="btn btn-success mt-3">Crear Remito</button>
     </form>
 </div>
 

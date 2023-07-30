@@ -8,7 +8,7 @@ use App\Models\Product;
 use App\Models\Inventory;
 use App\Models\OrderDetail;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Storage;  // Asegúrate de tener este import en la parte superior del archivo
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderCreated; // Importa la clase OrderCreated aquí
 
@@ -33,48 +33,58 @@ class OrderController extends Controller
         return view('orders.create', compact('products', 'camps'));
     }
 
-public function store(Request $request)
-{
-    $request->validate([
-        'product_id' => 'required|array',
-        'quantity' => 'required|array',
-        'camp_id' => 'required|exists:camps,id'
-    ]);
-
-    $order = new Order([
-        'user_id' => auth()->id(),
-        'camp_id' => $request->input('camp_id'),
-    ]);
-    $order->save();
-
-    $productIds = $request->input('product_id');
-    $quantities = $request->input('quantity');
-
-    $productsData = [];
-    foreach ($productIds as $index => $productId) {
-        $quantity = $quantities[$index];
-        $productsData[$productId] = ['quantity' => $quantity];
-    }
-
-
-    $order->products()->attach($productsData);
-
-    foreach ($productsData as $productId => $productData) {
-        Inventory::create([
-            'product_id' => $productId,
-            'quantity' => $productData['quantity'],
-            'movement_type' => 'OUT',
-            'order_id' => $order->id,  // Add this line
-            'remarks' => 'Order ID: ' . $order->id,
+    public function store(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|array',
+            'quantity' => 'required|array',
+            'camp_id' => 'required|exists:camps,id'
         ]);
-    }
     
-
-    // Enviar el correo electrónico
-    Mail::to($order->user->email)->send(new OrderCreated($order));
-
-    return redirect()->route('orders.index')->with('success', 'Orden creada exitosamente.');
-}
+        $order = new Order([
+            'user_id' => auth()->id(),
+            'camp_id' => $request->input('camp_id'),
+        ]);
+        $order->save();
+    
+        $productIds = $request->input('product_id');
+        $quantities = $request->input('quantity');
+    
+        $productsData = [];
+        foreach ($productIds as $index => $productId) {
+            $quantity = $quantities[$index];
+            $productsData[$productId] = ['quantity' => $quantity];
+        }
+    
+    
+        $order->products()->attach($productsData);
+    
+        foreach ($productsData as $productId => $productData) {
+            Inventory::create([
+                'product_id' => $productId,
+                'quantity' => $productData['quantity'],
+                'movement_type' => 'OUT',
+                'order_id' => $order->id,
+                'remarks' => 'Order ID: ' . $order->id,
+            ]);
+        }
+        
+        // Suponiendo que la clase OrderCreated genera el contenido del PDF
+        // y se puede acceder a él a través de un método llamado getPdfContent()
+        $orderCreated = new OrderCreated($order);
+        
+    
+        // Enviar el correo electrónico
+        Mail::to($order->user->email)->send($orderCreated);
+    
+        // Guardar el PDF en Google Drive
+        // Generar el contenido del PDF
+    $pdf = PDF::loadView('orders_pdf', compact('order'));
+    $pdfContent = $pdf->output();  // Obtiene el contenido del PDF como una cadena
+    
+    
+        return redirect()->route('orders.index')->with('success', 'Orden creada exitosamente.');
+    }
 
     public function show($id)
     {

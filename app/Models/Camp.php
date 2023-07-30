@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Camp extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'name',
+        'location',
+    ];
     public function orders() 
 {
     return $this->hasMany(Order::class);

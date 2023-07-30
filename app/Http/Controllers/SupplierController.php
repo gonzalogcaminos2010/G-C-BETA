@@ -28,4 +28,25 @@ class SupplierController extends Controller
         return view('suppliers.create');
     }
 
+    public function store(Request $request)
+    {
+        // Valida los datos del formulario
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'contact_person' => 'nullable|string|max:255',
+            'contact_phone' => 'nullable|string|max:255',
+            'contact_email' => 'nullable|string|email|max:255',
+            'address' => 'nullable|string',
+            'notes' => 'nullable|string',
+        ]);
+
+        // Crea el nuevo proveedor y lo guarda en la base de datos
+        $supplier = new Supplier($request->all());
+        $supplier->save();
+
+        // Redirige al usuario a la lista de proveedores con un mensaje de éxito
+        return redirect()->route('suppliers.index')
+                         ->with('success', 'Proveedor creado con éxito.');
+    }
+
 }
