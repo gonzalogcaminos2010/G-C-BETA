@@ -7,6 +7,7 @@ use App\Http\Controllers\CampController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 
     /*
@@ -19,7 +20,9 @@ use Illuminate\Support\Facades\Auth;
     | be assigned to the "web" middleware group. Make something great!
     |
     */
-
+    Route::get('/test', function () {
+        return view('test');
+    });
     Route::get('/', function () {
         return view('welcome');
     });
@@ -62,3 +65,4 @@ Route::resource('categories',CategoryController::class);
 //CAMPAMENTOS
 
 Route::resource('camps', CampController::class);
+Route::resource('users', UserController::class);

@@ -4,20 +4,23 @@ namespace App\Imports;
 
 use App\Models\Product;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ProductsImport implements ToModel
+class ProductsImport implements ToModel, WithHeadingRow
 {
     public function model(array $row)
     {
+        \Log::info($row); // Esto registrará en el log la fila que se está procesando
+    
         return new Product([
-            'name' => $row[0],
-            'description' => $row[1],
-            'code' => $row[2],
-            'price' => $row[3],
-            'user_id' => $row[4],
-            'supplier_id' => $row[5],
-            'category_id' => $row[6],
+            'name' => $row['name'] ?? 'Sin nombre',
+            'description' => $row['description'] ?? 'Sin descripción',
+            'code' => $row['code'] ?? 'Sin código',
+            'user_id' => $row['user_id'] ?? null,
+            'supplier_id' => $row['supplier_id'] ?? null,
+            'category_id' => $row['category_id'] ?? null,
         ]);
     }
+    
 }
 
