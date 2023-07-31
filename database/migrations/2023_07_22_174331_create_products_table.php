@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->string('code');
-            $table->float('price');
+            $table->string('code')->nullable();
+            $table->float('price');//ESTO SE REMUEVE EN MIGRACION POSTERIOR
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('supplier_id')->constrained()->onDelete('cascade');
             $table->foreignId('category_id')->constrained()->onDelete('cascade');

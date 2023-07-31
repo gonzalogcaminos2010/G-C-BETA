@@ -1,26 +1,45 @@
 <?php
 
 namespace Database\Seeders;
-use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use App\Models\Category;
+use App\Models\Camp;
+use App\Models\Supplier;
+use Database\Seeders\ProductSeeder;
 
 class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
+     *
+     * @return void
      */
-    public function run(): void
+    public function run()
     {
-        \App\Models\User::factory(10)->create();
-        \App\Models\Category::factory(10)->create();
-        \App\Models\Supplier::factory(10)->create();
-        \App\Models\Camps::factory(10)->create();
-        \App\Models\Products::factory(10)->create();
+        // Create the specific user if they do not exist
+        Supplier::firstOrCreate(['name' => 'Proveedor']);
+        User::firstOrCreate(
+            ['email' => 'gonzalogabrielcaminos@gmail.com'],
+            [
+                'name' => 'Gonzalo Gabriel Caminos',
+                'password' => Hash::make('Nueva2022'),
+                // Add any other fields as required
+            ]
+        );
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // Create some generic categories
+        Category::firstOrCreate(['name' => 'Categoría 1']);
+        Category::firstOrCreate(['name' => 'Categoría 2']);
+        Category::firstOrCreate(['name' => 'Categoría 3']);
+
+        // Create some camps
+        Camp::firstOrCreate(['name' => 'Antofalla']);
+        Camp::firstOrCreate(['name' => 'La Rioja']);
+
+        // Call the ProductSeeder to seed the CSV data
+        $this->call(ProductSeeder::class);  // Note the changed class name here
     }
 }

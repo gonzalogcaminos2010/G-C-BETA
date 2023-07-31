@@ -5,6 +5,9 @@ use PDF;
 use App\Models\Order;
 use App\Models\Camp;
 use App\Models\Product;
+use App\Models\User;
+use App\Models\Category;
+use App\Models\Supplier;
 use App\Models\Inventory;
 use App\Models\OrderDetail;
 use Illuminate\Http\Request;
@@ -28,10 +31,15 @@ class OrderController extends Controller
 
     public function create()
     {
-        $products = Product::all();
         $camps = Camp::all();
-        return view('orders.create', compact('products', 'camps'));
+        $products = Product::all();
+        $users = User::all(); // Asegúrate de añadir esta línea
+        $categories = Category::all();
+        $suppliers = Supplier::all();
+    
+        return view('orders.create', compact('camps', 'products', 'users', 'categories', 'suppliers'));
     }
+    
 
     public function store(Request $request)
     {

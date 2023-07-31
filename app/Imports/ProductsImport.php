@@ -10,7 +10,7 @@ class ProductsImport implements ToModel, WithHeadingRow
 {
     public function model(array $row)
     {
-        \Log::info($row); // Esto registrará en el log la fila que se está procesando
+        
     
         return new Product([
             'name' => $row['name'] ?? 'Sin nombre',
