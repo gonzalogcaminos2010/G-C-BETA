@@ -291,6 +291,20 @@ return [
 
     'menu' => [
         [
+            'text' => 'Usuarios',
+            'icon' => 'fas fa-fw fa-user',
+            'submenu' => [
+                [
+                    'text' => 'Ver Usuarios',
+                    'route'  => 'users.index',
+                ],
+                [
+                    'text' => 'Crear Usuario',
+                    'route'  => 'users.create',
+                ],
+            ],
+        ],
+        [
             'text' => 'Inventario',
             'icon' => 'fas fa-fw fa-box',
             'submenu' => [

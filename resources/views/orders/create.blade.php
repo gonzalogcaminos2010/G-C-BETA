@@ -27,15 +27,18 @@
                     </select>
                 </div>
                 <div id="order-product-container">
-                    <div class="order-product-item">
-                        <div class="form-group">
-                            <label for="product_id">Producto</label>
-                            <select class="form-control" id="product_id" name="product_id[]">
-                                @foreach($products as $product)
-                                    <option value="{{ $product->id }}">{{ $product->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                    
+                        <div class="order-product-item">
+                            <div class="form-group">
+                                <label for="product_id">Producto</label>
+                                <select class="form-control select2" id="product_id" name="product_id[]">
+                                    @foreach($products as $product)
+                                        <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        
+                    </div>
                         <div class="form-group">
                             <label for="quantity">Cantidad</label>
                             <input type="number" class="form-control" id="quantity" name="quantity[]" min="1" required>
@@ -112,8 +115,11 @@
 
 @stop
 
+<!-- Rest of your Blade template code -->
+
 @section('js')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 $(document).ready(function() {
     $('#add-product').click(function() {
@@ -125,13 +131,21 @@ $(document).ready(function() {
     $('#addProductForm').on('submit', function(event) {
         event.preventDefault();
 
+        var formData = $(this).serialize();
+
         $.ajax({
             type: "POST",
-            url: "/api/products", // Actualiza esto a tu ruta API
-            data: $(this).serialize(),
+            url: "/products", // Actualiza esto a tu ruta API
+            data: formData,
             success: function(data) {
+                // Close the modal manually
                 $('#addProductModal').modal('hide');
+                
+                // Append the new product to the product selector
                 $('#product_id').append(new Option(data.name, data.id, true, true));
+                
+                // Clear the form fields
+                $('#addProductForm')[0].reset();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.log(textStatus, errorThrown);
@@ -141,3 +155,5 @@ $(document).ready(function() {
 });
 </script>
 @stop
+
+<!-- Rest of your Blade template code -->

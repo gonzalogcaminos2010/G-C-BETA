@@ -7,7 +7,9 @@ use App\Http\Controllers\CampController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CoronaController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VehicleController;
 use Illuminate\Support\Facades\Auth;
 
     /*
@@ -66,3 +68,11 @@ Route::resource('categories',CategoryController::class);
 
 Route::resource('camps', CampController::class);
 Route::resource('users', UserController::class);
+
+
+
+Route::resource('coronas', CoronaController::class);
+
+
+//VEHICULOS
+Route::resource('vehicles', VehicleController::class);
